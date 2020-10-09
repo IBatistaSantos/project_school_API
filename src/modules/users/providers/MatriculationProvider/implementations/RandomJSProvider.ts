@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import IMatriculationProvider from '../models/IMatriculationProvider';
 
 @injectable()
-class RandomJsProvider implements IMatriculationProvider {
+export default class RandomJsProvider implements IMatriculationProvider {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -23,5 +23,3 @@ class RandomJsProvider implements IMatriculationProvider {
     return matriculation;
   }
 }
-
-export default RandomJsProvider;
