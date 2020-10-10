@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateUser1602095622909 implements MigrationInterface {
+export default class CreateStudent1602265655986 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
     queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'students',
         columns: [
           {
             name: 'id',
@@ -15,22 +14,33 @@ export default class CreateUser1602095622909 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'name',
-            type: 'varchar',
-          },
-          {
-            name: 'email',
+            name: 'date_of_birth',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'password',
+            name: 'nationality',
             type: 'varchar',
+            isNullable: true,
           },
           {
-            name: 'matriculation',
+            name: 'naturalness',
             type: 'varchar',
-            isUnique: true,
+            isNullable: true,
+          },
+          {
+            name: 'religion',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'sex',
+            type: 'enum',
+            enum: ['M', 'F'],
+          },
+          {
+            name: 'user_id',
+            type: 'uuid',
           },
           {
             name: 'created_at',
@@ -43,11 +53,21 @@ export default class CreateUser1602095622909 implements MigrationInterface {
             default: 'now()',
           },
         ],
+        foreignKeys: [
+          {
+            name: 'StudentUser',
+            referencedTableName: 'users',
+            referencedColumnNames: ['id'],
+            columnNames: ['user_id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    queryRunner.dropTable('users');
+    queryRunner.dropTable('students');
   }
 }

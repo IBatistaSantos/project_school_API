@@ -1,7 +1,9 @@
-import ICreateUserDTO from '@modules/users/dtos/CreateUserDTO';
-import User from '@modules/users/infra/typeorm/entities/User';
 import { uuid } from 'uuidv4';
-import IUserRepository from '../IUserRepository';
+
+import IUserRepository from '@modules/users/repositories/IUserRespository';
+import ICreateUserDTO from '@modules/users/dtos/CreateUserDTO';
+import User from '../../infra/typeorm/entities/Users';
+import IFindAllProviderDTO from '@modules/users/dtos/IListProviderDTO';
 
 class FakeUserRepository implements IUserRepository {
   private users: User[] = [];
@@ -16,23 +18,25 @@ class FakeUserRepository implements IUserRepository {
     return findUser;
   }
 
-  public async findByMatriculation(
-    matriculation: string,
-  ): Promise<User | undefined> {
-    const findUser = this.users.find(
-      user => user.matriculation === matriculation,
-    );
-    return findUser;
+  public async findAllProviders({except_user_id}: IFindAllProviderDTO): Promise<User[]> {
+    let { users } = this;
+
+    if (except_user_id) {
+      users = this.users.filter(user => user.id !== except_user_id)
+    }
+
+    return users
+
   }
+
 
   public async create({
     name,
     email,
     password,
-    matriculation,
   }: ICreateUserDTO): Promise<User> {
     const user = new User();
-    Object.assign(user, { id: uuid(), name, email, password, matriculation });
+    Object.assign(user, { id: uuid(), name, email, password });
 
     this.users.push(user);
     return user;
@@ -45,5 +49,4 @@ class FakeUserRepository implements IUserRepository {
     return user;
   }
 }
-
 export default FakeUserRepository;

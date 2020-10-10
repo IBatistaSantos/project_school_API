@@ -1,9 +1,8 @@
-import AppError from '@shared/errors/AppError';
-import { inject, injectable } from 'tsyringe';
-import User from '../infra/typeorm/entities/User';
+import User from '@modules/users/infra/typeorm/entities/Users';
+
+import { injectable, inject } from 'tsyringe';
+import IUserRepository from '../repositories/IUserRespository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import IUserRepository from '../repositories/IUserRepository';
-import IMatriculationProvider from '../providers/MatriculationProvider/models/IMatriculationProvider';
 
 interface IRequest {
   name: string;
@@ -19,26 +18,16 @@ class CreateUserService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
-
-    @inject('MatriculationProvider')
-    private matriculationProvider: IMatriculationProvider,
   ) {}
 
   public async execute({ name, email, password }: IRequest): Promise<User> {
-    const checkUserExists = await this.userRepository.findByEmail(email);
-
-    if (checkUserExists) {
-      throw new AppError('Email já cadastrado');
-    }
-
     const hashedPassord = await this.hashProvider.generateHash(password);
-    const matriculation = await this.matriculationProvider.generateMatriculation();
-
+    const matriculation = String(Math.random()).slice(3, 12);
     const user = await this.userRepository.create({
       name,
       email,
-      matriculation,
       password: hashedPassord,
+      matriculation,
     });
 
     return user;
