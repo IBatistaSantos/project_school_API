@@ -1,10 +1,12 @@
 import { Router } from 'express';
 
 import { celebrate, Segments, Joi } from 'celebrate';
-import UsersController from '../controllers/StudentsController';
+import ensureAuthenticaded from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import StudentsController from '../controllers/StudentsController';
 
 const studentRouter = Router();
-const userController = new UsersController();
+studentRouter.use(ensureAuthenticaded);
+const studentController = new StudentsController();
 
 studentRouter.post(
   '/',
@@ -20,7 +22,7 @@ studentRouter.post(
       sex: Joi.string().valid('M', 'F'),
     },
   }),
-  userController.create,
+  studentController.create,
 );
 
 export default studentRouter;

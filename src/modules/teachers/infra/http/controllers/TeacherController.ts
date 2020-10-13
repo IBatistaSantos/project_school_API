@@ -20,6 +20,7 @@ export default class TeacherController {
       password,
       monthly_shift,
       work_schedule,
+      role: 'teacher',
     });
 
     return response.json(classToClass(teacher));

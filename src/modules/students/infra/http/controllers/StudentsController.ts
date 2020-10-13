@@ -17,6 +17,7 @@ export default class StudentController {
     } = request.body;
 
     const createStudentService = container.resolve(CreateStudentService);
+
     const student = await createStudentService.execute({
       name,
       email,
@@ -26,6 +27,7 @@ export default class StudentController {
       naturalness,
       religion,
       sex,
+      role: 'student',
     });
 
     return response.json(classToClass(student));

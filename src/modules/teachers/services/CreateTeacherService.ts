@@ -26,6 +26,7 @@ class CreateStudentService {
     name,
     email,
     password,
+    role,
     monthly_shift,
     work_schedule,
   }: IRequest): Promise<IResponse> {
@@ -35,6 +36,7 @@ class CreateStudentService {
       name,
       email,
       password,
+      role,
     });
 
     const teacher = await this.teacherRepository.create({

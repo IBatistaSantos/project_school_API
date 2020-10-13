@@ -8,7 +8,7 @@ sessionRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      email: Joi.string().email().required(),
+      matriculation: Joi.string().required(),
       password: Joi.string().required(),
     },
   }),

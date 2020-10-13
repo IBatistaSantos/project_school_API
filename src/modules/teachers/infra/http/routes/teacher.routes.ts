@@ -1,9 +1,12 @@
 import { Router } from 'express';
 
 import { celebrate, Segments, Joi } from 'celebrate';
+import ensureAuthenticaded from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import TeacherController from '../controllers/TeacherController';
 
 const teacherRouter = Router();
+teacherRouter.use(ensureAuthenticaded);
+
 const teacherController = new TeacherController();
 
 teacherRouter.post(

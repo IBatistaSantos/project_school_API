@@ -8,6 +8,7 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
+  role: string;
 }
 
 @injectable()
@@ -20,7 +21,12 @@ class CreateUserService {
     private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ name, email, password }: IRequest): Promise<User> {
+  public async execute({
+    name,
+    email,
+    password,
+    role,
+  }: IRequest): Promise<User> {
     const hashedPassord = await this.hashProvider.generateHash(password);
     const matriculation = String(Math.random()).slice(3, 12);
     const user = await this.userRepository.create({
@@ -28,6 +34,7 @@ class CreateUserService {
       email,
       password: hashedPassord,
       matriculation,
+      role,
     });
 
     return user;

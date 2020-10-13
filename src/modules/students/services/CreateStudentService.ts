@@ -34,6 +34,7 @@ class CreateStudentService {
     naturalness,
     religion,
     sex,
+    role,
   }: IRequest): Promise<IResponse> {
     const userService = container.resolve(CreateUserService);
 
@@ -41,6 +42,7 @@ class CreateStudentService {
       name,
       email,
       password,
+      role,
     });
 
     const student = await this.studentRepository.create({

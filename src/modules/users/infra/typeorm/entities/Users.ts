@@ -25,6 +25,9 @@ class User {
   @Column()
   matriculation: string;
 
+  @Column()
+  role: string;
+
   @CreateDateColumn()
   created_at: Date;
 
