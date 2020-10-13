@@ -1,4 +1,4 @@
-export default interface ICreateUserDTO {
+export default interface ICreateStudentDTO {
   date_of_birth: string;
   nationality: string;
   naturalness: string;
