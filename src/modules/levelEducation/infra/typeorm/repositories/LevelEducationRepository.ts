@@ -1,7 +1,11 @@
 import { getRepository, Repository } from 'typeorm';
 
 import ILevelEducationRepository from '@modules/levelEducation/repositories/ILevelEducationRepository';
+import SubjectRepository from '@modules/subjects/infra/typeorm/repositories/SubjectRepository';
+import Subject from '@modules/subjects/infra/typeorm/entities/Subject';
+import CreateSubjectService from '@modules/subjects/services/CreateSubjectService';
 import LevelEducation from '../entities/LevelEducation';
+import levelEducationRouter from '../../http/routes/levelEducation.routes';
 
 class LevelEducationRepository implements ILevelEducationRepository {
   private ormRepository: Repository<LevelEducation>;
@@ -29,9 +33,26 @@ class LevelEducationRepository implements ILevelEducationRepository {
     return levelEducations;
   }
 
-  public async create(name: string): Promise<LevelEducation> {
+  public async create(
+    name: string,
+    subjects: Subject[],
+  ): Promise<LevelEducation> {
     const levelEducation = this.ormRepository.create({ name });
 
+    let sweeterArray = [];
+    if (subjects) {
+      sweeterArray = await Promise.all(
+        subjects.map(subject => {
+          const subjectRepository = new SubjectRepository();
+          const checkExists = subjectRepository.findById(subject.id);
+          if (checkExists) {
+            return checkExists;
+          }
+        }),
+      );
+    }
+
+    levelEducation.subjects = sweeterArray;
     await this.ormRepository.save(levelEducation);
     return levelEducation;
   }

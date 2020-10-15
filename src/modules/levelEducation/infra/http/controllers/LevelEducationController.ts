@@ -6,7 +6,7 @@ import ListAllLevelEducationService from '@modules/levelEducation/services/ListA
 
 export default class LevelEducationController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name } = request.body;
+    const { name, subjects } = request.body;
 
     const createLevelEducationService = container.resolve(
       CreateLevelEducationService,
@@ -14,6 +14,7 @@ export default class LevelEducationController {
 
     const levelEducation = await createLevelEducationService.execute({
       name,
+      subjects,
     });
 
     return response.json(classToClass(levelEducation));

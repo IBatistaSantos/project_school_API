@@ -5,6 +5,7 @@ import ILevelEducationRepository from '../repositories/ILevelEducationRepository
 
 interface IRequest {
   name: string;
+  subjects: [];
 }
 
 @injectable()
@@ -14,7 +15,7 @@ class CreateLevelEducationService {
     private levelEducationRepository: ILevelEducationRepository,
   ) {}
 
-  public async execute({ name }: IRequest): Promise<LevelEducation> {
+  public async execute({ name, subjects }: IRequest): Promise<LevelEducation> {
     const checkLevelEducationExists = await this.levelEducationRepository.findByName(
       name,
     );
@@ -23,7 +24,10 @@ class CreateLevelEducationService {
       throw new AppError('Level Education already exists');
     }
 
-    const levelEducation = await this.levelEducationRepository.create(name);
+    const levelEducation = await this.levelEducationRepository.create(
+      name,
+      subjects,
+    );
 
     return levelEducation;
   }
