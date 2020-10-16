@@ -16,6 +16,11 @@ import LevelEducationRepository from '@modules/levelEducation/infra/typeorm/repo
 import ISubjectRepository from '@modules/subjects/repositories/ISubjectRepository';
 import SubjectRepository from '@modules/subjects/infra/typeorm/repositories/SubjectRepository';
 
+import IClasseRepository from '@modules/class/repositories/IClassRepository';
+import ClasseRepository from '@modules/class/infra/typeorm/repositories/ClassRepository';
+
+
+
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
 
 container.registerSingleton<IStudentRepository>(
@@ -36,4 +41,9 @@ container.registerSingleton<ILevelEducationRepository>(
 container.registerSingleton<ISubjectRepository>(
   'SubjectRepository',
   SubjectRepository,
+);
+
+container.registerSingleton<IClasseRepository>(
+  'ClasseRepository',
+  ClasseRepository,
 );
