@@ -3,9 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import ILevelEducationRepository from '@modules/levelEducation/repositories/ILevelEducationRepository';
 import SubjectRepository from '@modules/subjects/infra/typeorm/repositories/SubjectRepository';
 import Subject from '@modules/subjects/infra/typeorm/entities/Subject';
-import CreateSubjectService from '@modules/subjects/services/CreateSubjectService';
 import LevelEducation from '../entities/LevelEducation';
-import levelEducationRouter from '../../http/routes/levelEducation.routes';
 
 class LevelEducationRepository implements ILevelEducationRepository {
   private ormRepository: Repository<LevelEducation>;
@@ -39,9 +37,9 @@ class LevelEducationRepository implements ILevelEducationRepository {
   ): Promise<LevelEducation> {
     const levelEducation = this.ormRepository.create({ name });
 
-    let sweeterArray = [];
+    let subjectsExists: any[]= [];
     if (subjects) {
-      sweeterArray = await Promise.all(
+      subjectsExists = await Promise.all(
         subjects.map(subject => {
           const subjectRepository = new SubjectRepository();
           const checkExists = subjectRepository.findById(subject.id);
@@ -50,9 +48,9 @@ class LevelEducationRepository implements ILevelEducationRepository {
           }
         }),
       );
+      levelEducation.subjects = subjectsExists;
     }
 
-    levelEducation.subjects = sweeterArray;
     await this.ormRepository.save(levelEducation);
     return levelEducation;
   }
