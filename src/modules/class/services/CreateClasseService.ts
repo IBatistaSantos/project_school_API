@@ -3,7 +3,6 @@ import { inject, injectable } from 'tsyringe';
 import IClassRepository from '@modules/class/repositories/IClassRepository';
 import Class from '../infra/typeorm/entities/Classes';
 import LevelEducationRepository from '@modules/levelEducation/infra/typeorm/repositories/LevelEducationRepository';
-import classeRouter from '../infra/http/routes/class.routes';
 
 interface IRequest {
   name: string;
